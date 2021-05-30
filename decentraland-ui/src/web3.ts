@@ -6,16 +6,15 @@ const useWeb3 = (): any => {
 
   useEffect(() => {
     let instance: any;
-    let windowObject: any = window;
 
-    if (windowObject.ethereum) {
+    if (window.ethereum) {
       try {
-        instance = new Web3(windowObject.ethereum);
+        instance = new Web3(window.ethereum);
       } catch (error) {
         console.error("Error:", error);
       }
-    } else if (windowObject.web3) {
-      instance = new Web3(windowObject.web3);
+    } else if (window.web3) {
+      instance = new Web3(window.web3);
     } else {
       const provider = new Web3.providers.HttpProvider("http://127.0.0.1:8545");
       instance = new Web3(provider);

@@ -1,4 +1,4 @@
-import { Center, Button, Field, Card } from "decentraland-ui";
+import { Center, Button, Field } from "decentraland-ui";
 
 export default function Account({ address, balance, sendTransaction }: any) {
   return (

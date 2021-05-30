@@ -1,5 +1,4 @@
-import React from "react";
-import { Navbar, Page, Footer, Button, Center } from "decentraland-ui";
+import { Navbar, Page, Footer } from "decentraland-ui";
 
 export default function Layout({ children, getUserStatus, address, balance }: any) {
   return (

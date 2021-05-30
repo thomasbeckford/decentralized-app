@@ -13,6 +13,7 @@ import { Modal, Button, Close } from "decentraland-ui";
 declare global {
   interface Window {
     ethereum: any;
+    web3: any;
   }
 }
 
