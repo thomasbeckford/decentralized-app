@@ -1,19 +1,14 @@
-# Decentraland Take Home
+# Decentraland Take Home dApp
 
-# Install
+# Install and run frontend
 
 ```
 cd decentraland-ui
 yarn
-```
-
-#### Run UI
-
-```
 yarn start
 ```
 
-#### Run server (hardhat)
+#### Install and run server
 
 ```
 1. Open a new terminal tab:
@@ -31,37 +26,36 @@ npx hardhat --network localhost faucet <token-address> <your-address>
 3. Connect your MetaMask extension to the localhost network. You should have 1 ETH in your balance.
 
 4. Add the Dummy Token to MetaMask:
-   - Click on `Add Token`
-   - Click on `Custom Token`
-   - Paste on `Token Contract Address` the Dummy Token contract address (from step 2)
+   - Click on `Import tokens`
+   - Paste on `deployed contract token address` (Token.sol) the Dummy Token contract address (from step 2)
+   - Set decimals to 0
    - You should see `100 DUMMY` tokens in your wallet
 ```
 
 ### Stack
 
 ```
- - TYPESCRIPT
- - YARN
- - REACT
- - REDUX
- - JEST
- - ETHERS
- - REACT ROUTER DOM
- - WEB3
+ - Yarn
+ - Typescript
+ - React
+ - Redux
+ - Jest
+ - Ethers.js
+ - Web3
 ```
 
-#### PENDING THINGS TODO:
+#### Corrections (TODO)
+
+###### - Remove any and add the correct types
 
 ###### - Move Async functions to Saga generators
 
-###### - Using reselects where we need
+###### - Using re-selects where we need
 
 ###### - Eslint + prettier
-
-###### - More styling
-
-###### - Add more types!
 
 ###### - Setup tests for selectors, generators, components
 
 ###### - Finish loading reducer
+
+###### - More styling
