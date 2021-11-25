@@ -68,12 +68,16 @@ function App(): JSX.Element {
       value: web3.utils.toWei(amount, "ether"),
     };
 
-    const runTransaction = await web3.eth.sendTransaction(transaction);
-    if (runTransaction && runTransaction.status) {
-      setConfirmTransactionModal({ open: false, data: null });
-      setNotification(true);
+    try {
+      const runTransaction = await web3.eth.sendTransaction(transaction);
+      if (runTransaction && runTransaction.status) {
+        setConfirmTransactionModal({ open: false, data: null });
+        setNotification(true);
+      }
+      setUserBalance(getAddress);
+    } catch (error: any) {
+      alert(error.message);
     }
-    setUserBalance(getAddress);
   };
 
   return (
@@ -94,7 +98,7 @@ function App(): JSX.Element {
             <Modal.Header>Are you sure?</Modal.Header>
             <Modal.Content>You are about to send</Modal.Content>
             <Modal.Actions>
-              <Button onClick={() => handleSendTransaction()} primary>
+              <Button onClick={handleSendTransaction} primary>
                 Proceed
               </Button>
               <Button onClick={() => setConfirmTransactionModal({ ...confirmTransactionModal, open: false })}>
