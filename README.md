@@ -1,6 +1,6 @@
 # Decentraland Take Home dApp
 
-# Install and run frontend
+## Install and run frontend
 
 ```
 cd decentraland-ui
@@ -8,7 +8,7 @@ yarn
 yarn start
 ```
 
-#### Install and run server
+## Install and run server
 
 ```
 1. Open a new terminal tab:
