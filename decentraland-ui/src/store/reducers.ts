@@ -1,7 +1,10 @@
+import { UserState } from "./selectors";
+
 export interface MainState {
   message: string;
   address: string | null;
   balance: number;
+  user: UserState;
 }
 
 const initialState = {
@@ -9,7 +12,12 @@ const initialState = {
   address: null,
   balance: 0,
   loading: false,
-  connected: false,
+  user: {
+    name: "",
+    email: "",
+    avatar: "",
+    isConnected: false,
+  },
 };
 
 export const reducers = (state: MainState = initialState, action: any) => {
@@ -21,8 +29,14 @@ export const reducers = (state: MainState = initialState, action: any) => {
       return { ...state, balance: action.payload, message: action.message };
     }
 
-    case "IS_CONNECTED": {
-      return { ...state, connected: action.payload };
+    case "SET_CONNECTED": {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          isConnected: action.payload,
+        },
+      };
     }
 
     case "SET_LOADING": {

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setBalance, setAddress, setLoading, isConnected } from "./actions";
+import { setBalance, setAddress, setLoading, setConnected } from "./store/actions";
+import { getAddressInfo, getBalanceInfo, getUserInfo } from "./store/selectors";
 
 import useWeb3 from "./web3";
 
@@ -9,6 +10,8 @@ import Layout from "./layout";
 import Account from "./pages/account";
 import Home from "./pages/home";
 import { Modal, Button, Close } from "decentraland-ui";
+// import { getAddress } from "ethers/lib/utils";
+// import web3 from "./web3";
 
 declare global {
   interface Window {
@@ -25,33 +28,29 @@ function App(): JSX.Element {
   const dispatch = useDispatch();
   const web3: any = useWeb3();
 
-  const getAddress = useSelector<any>((state) => state.address);
-  const getBalance = useSelector<any>((state) => state.balance);
-  const getUserStatus = useSelector<any>((state) => state.connected);
+  const getAddress = useSelector(getAddressInfo);
+  const getBalance = useSelector(getBalanceInfo);
+  const getUser = useSelector(getUserInfo);
 
   const setUserAccount = async () => {
     if (ethereum) {
       const enableEthereum = await ethereum.enable();
-      console.log(enableEthereum);
-      setLoading(true);
-      web3.eth.getAccounts().then((accounts: any) => {
-        setTimeout(function () {
-          dispatch(setAddress(accounts[0]));
-          setUserBalance(accounts[0]);
-          dispatch(isConnected(true));
-        }, 700);
-      });
+      dispatch(setLoading(true));
+
+      const accounts = await web3.eth.getAccounts();
+      dispatch(setAddress(accounts[0]));
+      dispatch(setConnected(true));
+      setUserBalance(accounts[0]);
     }
   };
 
   const setUserBalance = async (fromAddress: any) => {
-    await web3.eth.getBalance(fromAddress).then((value: any) => {
-      const credit = web3.utils.fromWei(value, "ether");
-      dispatch(setBalance(credit));
-    });
+    const balance = await web3.eth.getBalance(fromAddress);
+    const credit = web3.utils.fromWei(balance, "ether");
+    dispatch(setBalance(credit));
   };
 
-  const sendTransaction = (e: any) => {
+  const sendTransaction = (e: Event) => {
     e.preventDefault();
     setConfirmTransactionModal({ open: true, data: e });
   };
@@ -82,10 +81,10 @@ function App(): JSX.Element {
 
   return (
     <Router>
-      <Layout getUserStatus={getUserStatus} address={getAddress} balance={getBalance}>
+      <Layout getUser={getUserInfo} address={getAddress} balance={getBalance}>
         <Switch>
           <Route exact path='/'>
-            {!getUserStatus ? (
+            {!getUser.isConnected ? (
               <Home setUserAccount={setUserAccount} />
             ) : (
               <Account address={getAddress} balance={getBalance} sendTransaction={sendTransaction} />

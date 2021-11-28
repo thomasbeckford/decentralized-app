@@ -1,28 +1,31 @@
-import { useState } from "react";
 import { SignIn, Center, LoginModal, LoginModalOptionType } from "decentraland-ui";
+import { getLoadingStatus } from "./../../store/selectors";
+import { useSelector, useDispatch } from "react-redux";
+import { setLoading } from "../../store/actions";
+import { useState } from "react";
 
 function Home({ setUserAccount }: any) {
-  const [logIn, setLogIn] = useState(false);
-  const [loading, setLoading] = useState(false); // this could be a global state
+  const dispatch = useDispatch();
+  const loading = useSelector(getLoadingStatus);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const onConnect = () => {
-    setLoading(true);
     setUserAccount();
   };
 
   const handleClickSignIn = () => {
-    setLoading(true);
-    setTimeout(function () {
-      setLogIn(true);
-      setLoading(false);
+    dispatch(setLoading(true));
+    setTimeout(() => {
+      dispatch(setLoading(false));
+      setShowLoginModal(true);
     }, 600);
   };
 
-  if (logIn)
+  if (showLoginModal) {
     return (
       <div className='LoginModal-story'>
-        <LoginModal open onClose={() => setLogIn(false)} loading={loading}>
-          <LoginModal.Option type={LoginModalOptionType.METAMASK} onClick={() => onConnect()} />
+        <LoginModal open loading={loading}>
+          <LoginModal.Option type={LoginModalOptionType.METAMASK} onClick={onConnect} />
           <LoginModal.Option type={LoginModalOptionType.DAPPER} />
           <LoginModal.Option type={LoginModalOptionType.SAMSUNG} />
           <LoginModal.Option type={LoginModalOptionType.FORTMATIC} />
@@ -30,10 +33,11 @@ function Home({ setUserAccount }: any) {
         </LoginModal>
       </div>
     );
+  }
 
   return (
     <Center>
-      <SignIn isConnecting={loading} onConnect={() => handleClickSignIn()}>
+      <SignIn isConnecting={loading} onConnect={handleClickSignIn}>
         CONNECT
       </SignIn>
     </Center>
